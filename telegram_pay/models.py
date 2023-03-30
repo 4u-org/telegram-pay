@@ -53,7 +53,7 @@ class TelegramPay():
             subscription_json[0]["client"] = self
             return Subscription(**(subscription_json[0]))
         
-        return Subscription(client=self, id=subscription_id, exists=False, user_id=user_id)
+        return Subscription(client=self, subscription_id=subscription_id, exists=False, user_id=user_id)
 
     async def cancel_subscription(self, subscription_unique_id: str):
         endpoint = f"subscriptions/{subscription_unique_id}/cancel"
@@ -63,7 +63,7 @@ class Subscription(BaseModel):
     client: TelegramPay
     subscription_id: str
     exists: bool
-    test_mode: bool
+    test_mode: Optional[bool]
     user_id: int
     unique_id: Optional[str]
     valid_until: Optional[datetime]
