@@ -57,7 +57,17 @@ class TelegramPay():
 
     async def cancel_subscription(self, subscription_unique_id: str):
         endpoint = f"subscriptions/{subscription_unique_id}/cancel"
-        return await self.make_request(endpoint)
+        return await self.make_request_auth(endpoint)
+    
+    async def apply_promocode(self, subscription_id: str, user_id: int, promocode: str, sale: int):
+        endpoint = "promocodes/apply"
+        params = {
+            "subscription_id": subscription_id,
+            "user_id": user_id,
+            "promocode": promocode,
+            "sale": sale
+        }
+        return await self.make_request_auth(endpoint, params)
 
 class Subscription(BaseModel):
     client: TelegramPay
@@ -73,6 +83,8 @@ class Subscription(BaseModel):
     status: Optional[SubscriptionStatus]
     description: Optional[str]
     start_date: Optional[datetime]
+    promocode: Optional[str]
+    sale: Optional[int]
 
     class Config:
         arbitrary_types_allowed = True
